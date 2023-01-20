@@ -48,21 +48,6 @@ def daily_api():
     return parsed_json
 
 
-
-def pyson_parse(py_dict):
-
-
-    if py_dict == None:
-        return
-
-    else:
-        output= []
-        for each in py_dict:
-            output.append(each)
-
-        return output
-
-
 if __name__ == '__main__':
 
     test_dates= ['2014', '02']
