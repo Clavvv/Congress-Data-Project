@@ -1,8 +1,9 @@
 from configparser import ConfigParser
+import os
 
 
 
-def config(filename= '/Users/Ryan/Desktop/CongressAPP/database.ini', section= 'postgresql'):
+def config(filename= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))+("\database.ini"), section= 'postgresql'):
 
     parser= ConfigParser()
 
