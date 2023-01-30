@@ -58,7 +58,7 @@ def insert(dataframe):
         db_version= cursor.fetchone()
         print(db_version)
 
-        cursor.execute("""CREATE TABLE IF NOT EXISTS roll_call_data (
+        cursor.execute("""CREATE TABLE IF NOT EXISTS house_roll_call (
                             congress smallint,
                             chamber text,
                             session smallint,
@@ -84,7 +84,7 @@ def insert(dataframe):
         dataframe.to_csv(string_buffer, sep='\t', header=False, index=False)
         string_buffer.seek(0)
         data= string_buffer.getvalue()
-        cursor.copy_from(string_buffer, 'roll_call_data', null='')
+        cursor.copy_from(string_buffer, 'house_roll_call', null='')
 
         conn.commit()
         cursor.close()
