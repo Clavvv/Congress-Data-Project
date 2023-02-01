@@ -57,6 +57,5 @@ def get_bill_data():
 
 
 if __name__ == '__main__':
-
     test_dates= ['2014', '02']
-    #call_vote_by_date(*test_dates)
+    call_vote_by_date(*test_dates)
