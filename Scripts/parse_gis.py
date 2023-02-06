@@ -3,6 +3,7 @@ import libpysal
 import geopandas as gpd
 from itertools import groupby
 from shapely.geometry import Polygon
+import json
 
 
 
@@ -63,6 +64,8 @@ for i, row1 in districts.iterrows():
         overlap_dict[county_id, district_id]= overlap_ratio
 
 
-print(overlap_dict.keys())
+
+with open('output.txt', 'w') as f:
+    f.write(json.dumps(overlap_dict))
 
     
