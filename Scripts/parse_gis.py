@@ -1,11 +1,12 @@
 import os
-import libpysal
 import geopandas as gpd
-from itertools import groupby
-from shapely.geometry import Polygon
-import json
+import shapely
+import warnings 
+import matplotlib.pyplot as plt
+import itertools
 
 
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 districts_path= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))+"/GIS/116/US_cd116th_2021.shp"
 counties_path= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))+"/county_gis_data/county_data_2022/tl_2022_us_county.shp"
@@ -24,48 +25,32 @@ counties['STATEFP']= counties['STATEFP'].astype(str)
 counties['COUNTYFP']= counties['COUNTYFP'].astype(str)
 counties['county_id']= counties['STATEFP']+ '-' + counties['COUNTYFP']
 
-overlap_dict= {}
+#insuring CRS types are equivalent
+if districts.crs != counties.crs:
+    counties= counties.to_crs(districts.crs)
 
-#ensuring the CRS type of both Shapefiles are the same
-#rescaling the county, shapefile if they are different
 
-districts= districts.to_crs(5070)
-counties= counties.to_crs(5070)
+def get_overlap(layer1, layer2):
 
-#getting rid of invalid geometries such as
-#polygons that intersect themselves, 
-counties['geometry'].buffer(0)
-districts['geometry'].buffer(0)
+    assert layer1.crs == layer2.crs, "Layers must be of the same CRS format"
 
-for i, row1 in districts.iterrows():
-    district_id= row1['district_id']
-    district_polygon= row1['geometry']
 
-    overlap_df= gpd.GeoDataFrame({'geometry': [Polygon()]})
-    overlap_df.crs= districts.crs
-
-    state= row1['STATEFP']
-    county_valid= counties[counties['STATEFP'] == state]
-
-    for j, row2 in county_valid.iterrows():
-
-        county_id= row2['county_id']
-        county_polygon= row2['geometry']
-
-        overlap= district_polygon.intersection(district_polygon)
-
-        overlap_df= overlap_df.append({'geometry': overlap, "district_id": county_id}, ignore_index = True)
-
-        overlap_df['area_ratio']= (overlap_df.geometry.area / county_polygon.area)
-
-    overlap_grouped= overlap_df.groupby(['district_id']).sum()
-
-    for district_id, overlap_ratio in zip(overlap_grouped.index, overlap_grouped['area_ratio']):
-        overlap_dict[county_id, district_id]= overlap_ratio
+    join= gpd.sjoin(row, layer2, op='overlap')
+    print(join.head())
+    input()
 
 
 
-with open('output.txt', 'w') as f:
-    f.write(json.dumps(overlap_dict))
 
-    
+
+    return overlap_json
+
+
+
+
+
+if __name__ == "__main__":
+    test= counties[counties['STATEFP'] == '01']
+    test2= districts[districts['STATEFP'] == '01']
+
+    get_overlap(test, test2)
