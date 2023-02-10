@@ -29,28 +29,35 @@ counties['county_id']= counties['STATEFP']+ '-' + counties['COUNTYFP']
 if districts.crs != counties.crs:
     counties= counties.to_crs(districts.crs)
 
-
 def get_overlap(layer1, layer2):
 
     assert layer1.crs == layer2.crs, "Layers must be of the same CRS format"
 
 
-    join= gpd.sjoin(row, layer2, op='overlap')
-    print(join.head())
-    input()
+    join= gpd.sjoin(layer1, layer2, how='right', predicate='overlaps')
+
+    x= join[join['CD116FP'] == '11']
+
+    print(x)
+
+
+    x.plot(figsize=(10,10), edgecolor='k', facecolor='none')
+    plt.title('Counties')
+    plt.xlabel('Longitude')
+    plt.ylabel('Latitude')
+    plt.show()
 
 
 
 
-
-    return overlap_json
+    return None
 
 
 
 
 
 if __name__ == "__main__":
-    test= counties[counties['STATEFP'] == '01']
-    test2= districts[districts['STATEFP'] == '01']
+    test= counties[counties['STATEFP'] == '06']
+    test2= districts[districts['STATEFP'] == '06']
 
     get_overlap(test, test2)
