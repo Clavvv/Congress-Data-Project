@@ -36,11 +36,6 @@ def get_overlap(layer1, layer2):
 
     join= gpd.sjoin(layer1, layer2, how='right', predicate='overlaps')
 
-    x= join[join['CD116FP'] == '11']
-
-    print(x)
-
-
     x.plot(figsize=(10,10), edgecolor='k', facecolor='none')
     plt.title('Counties')
     plt.xlabel('Longitude')
@@ -57,7 +52,4 @@ def get_overlap(layer1, layer2):
 
 
 if __name__ == "__main__":
-    test= counties[counties['STATEFP'] == '06']
-    test2= districts[districts['STATEFP'] == '06']
-
     get_overlap(test, test2)

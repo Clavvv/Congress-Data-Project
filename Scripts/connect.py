@@ -107,8 +107,28 @@ def insert(dataframe):
     return None
 
 def gis_insert(gdf):
-    return
 
+    conn= None
+
+    try:
+        params= config(filename= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))+("\GIS.ini"))
+
+        print('CONNECTING TO THE POSTGRESQL DATABASE')
+        conn= psycopg2.connect(**params)
+
+        cursor= conn.cursor()
+
+        print('PostgreSQL database version:')
+        cursor.execute(cursor.fetchone())
+        print(db_version)
+
+    except(Exception, psycopg2.DatabaseError) as error:
+        print(error)
+
+    finally:
+        if conn != None:
+            conn.close()
+            print('DATABASE CONNECTION CLOSED.')
 
 
 if __name__ == '__main__':

@@ -49,19 +49,17 @@ def build_db():
 
 
 def init_gis():
+
     dir_path= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-    districts_path= dir_path + ("\CongressionalGIS")
-    counties_path= dir_path + ("\CountyGIS")
+    gis_path= f"{dir_path}/GIS"
+    gis_files= glob.glob(f"{gis_path}/**/*.shp", recursive=True)
 
-    district_files= glob.glob(f"{districts_path}/**/*.shp", recursive=True)
-    county_files= glob.glob(f"{districts_path}/**/*.shp", recursive=True)
-
-    print(county_files)
-
-
-
-
+    for file in gis_files:
+        name= file.split(gis_path)
+        table_name= name[1][1:].split('_', 1)
+        print(table_name[1][:-4])
+        input()
 
 
 if __name__ == '__main__':
