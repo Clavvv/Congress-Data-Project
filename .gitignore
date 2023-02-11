@@ -11,4 +11,5 @@
 *.iso
 *.xml
 *.gfs
+/GIS
 
