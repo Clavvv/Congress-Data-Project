@@ -122,6 +122,11 @@ def gis_insert(gdf):
         cursor.execute(cursor.fetchone())
         print(db_version)
 
+        
+
+
+
+
     except(Exception, psycopg2.DatabaseError) as error:
         print(error)
 
