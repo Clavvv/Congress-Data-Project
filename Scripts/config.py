@@ -3,7 +3,7 @@ import os
 
 
 
-def config(filename= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))+("\database.ini"), section= 'postgresql'):
+def config(filename= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))+("\CD_Database.ini"), section= 'postgresql'):
 
     parser= ConfigParser()
 

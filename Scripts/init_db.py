@@ -1,3 +1,5 @@
+import os
+import glob
 from connect import insert
 from api import call_vote_by_date
 from datetime import date, datetime, timedelta
@@ -43,6 +45,19 @@ def build_db():
         if isinstance(data, pd.DataFrame):
             insert(data)
 
+    return
+
+
+def init_gis():
+    dir_path= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+    districts_path= dir_path + ("\CongressionalGIS")
+    counties_path= dir_path + ("\CountyGIS")
+
+    district_files= glob.glob(f"{districts_path}/**/*.shp", recursive=True)
+    county_files= glob.glob(f"{districts_path}/**/*.shp", recursive=True)
+
+    print(county_files)
 
 
 
@@ -50,5 +65,6 @@ def build_db():
 
 
 if __name__ == '__main__':
-    build_db()
+    init_gis()
+
 

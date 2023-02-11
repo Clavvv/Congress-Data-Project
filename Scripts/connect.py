@@ -2,6 +2,7 @@ import os
 import psycopg2
 from config import config
 import io
+import geopandas as gpd
 import pandas as pd
 import csv
 
@@ -79,11 +80,17 @@ def insert(dataframe):
                             latest_action text);""")
 
         columns= dataframe.columns
+
         rows= dataframe.values
+
         string_buffer= io.StringIO()
+
         dataframe.to_csv(string_buffer, sep='\t', header=False, index=False)
+
         string_buffer.seek(0)
+
         data= string_buffer.getvalue()
+
         cursor.copy_from(string_buffer, 'house_roll_call', null='')
 
         conn.commit()
@@ -98,6 +105,9 @@ def insert(dataframe):
             print('DATABSE CONNECTION CLOSED.')
 
     return None
+
+def gis_insert(gdf):
+    return
 
 
 
