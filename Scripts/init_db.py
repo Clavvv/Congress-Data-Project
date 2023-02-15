@@ -1,6 +1,6 @@
 import os
 import glob
-from connect import insert
+from connect import insert, gis_insert
 from api import call_vote_by_date
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
@@ -56,10 +56,17 @@ def init_gis():
     gis_files= glob.glob(f"{gis_path}/**/*.shp", recursive=True)
 
     for file in gis_files:
+        #cleaning the file path strings to use as table names
         name= file.split(gis_path)
         table_name= name[1][1:].split('_', 1)
-        print(table_name[1][:-4])
-        input()
+        #calling database insertion function
+        gis_insert(table_name, file)
+
+    
+
+        
+        
+
 
 
 if __name__ == '__main__':
