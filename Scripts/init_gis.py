@@ -30,12 +30,18 @@ def init_gis():
         #cleaning the file path strings to use as table names
         table_name= file.split(gis_path)
         table_name= table_name[1][1:].split('_', 1)
+        table_name= table_name[1]
         
         #reading geodataframe from shapefiles
         gdf= gpd.read_file(file)
 
+        #setting CRS format
+        gdf.to_crs(4269)
+
         #creating table and uploading to PostGIS
-        gdf.to_postgis(con= engine, name= table_name, if_exists= 'replace')
+        gdf.to_postgis(con= engine, name= table_name, if_exists= 'replace', schema= 'public')
+
+
 
 
 
