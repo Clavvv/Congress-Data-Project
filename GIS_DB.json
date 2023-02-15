@@ -1,8 +1,0 @@
-{
-    "username":"postgresql",
-    "password":"zest69",
-    "host": "localhost",
-    "socket": "5432",
-    "database": "GIS"
-
-}
