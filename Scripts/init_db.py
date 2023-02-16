@@ -1,6 +1,6 @@
 import os
 import glob
-from connect import insert, gis_insert
+from connect import insert
 from api import call_vote_by_date
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
@@ -70,6 +70,6 @@ def init_gis():
 
 
 if __name__ == '__main__':
-    init_gis()
+    build_db()
 
 

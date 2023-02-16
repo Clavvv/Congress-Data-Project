@@ -96,6 +96,7 @@ def insert(dataframe):
         conn.commit()
         cursor.close()
 
+
     except(Exception, psycopg2.DatabaseError) as error:
         print(error)
 
