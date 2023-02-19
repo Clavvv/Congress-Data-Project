@@ -5,7 +5,8 @@ import pandas as pd
 import geopandas as gpd
 import json
 import glob
-from parse_gis import parse_GIS
+#from parse_gis import match
+
 
 def init_gis():
 
@@ -32,29 +33,12 @@ def init_gis():
         table_name= file.split(gis_path)
         table_name= table_name[1][1:].split('_', 1)
         table_name= table_name[1]
-        
-        #calling parse function
-        parse_GIS(table_name, file)
 
+        #read in shapefile as gdf
+        gdf= gpd.read_file(file)
+        
         #creating table and uploading to PostGIS
         gdf.to_postgis(con= engine, name= table_name, if_exists= 'replace', schema= 'public')
-
-def make_overlap_table(district_shp, county_shp):
-
-
-
-    return None
-
-
-
-
-
-
-
-    
-
-
-
 
 
 if __name__ == "__main__":
