@@ -5,7 +5,7 @@ import pandas as pd
 import geopandas as gpd
 import json
 import glob
-#from parse_gis import match
+import re
 
 
 def init_gis():
@@ -26,19 +26,32 @@ def init_gis():
     #getting filepaths for shapefiles
     gis_path= f"{dir_path}/GIS"
     gis_files= glob.glob(f"{gis_path}/**/*.shp", recursive=True)
+    names= set([])
 
     for file in gis_files:
-        
         #cleaning the file path strings to use as table names
-        table_name= file.split(gis_path)
-        table_name= table_name[1][1:].split('_', 1)
-        table_name= table_name[1]
+        #using regex to create homogenous naming scheme
+
+        table_name= file.split(gis_path)[1]
+
+        if (bool(re.match('.US', table_name))):
+            expression= r'.\w.\w\d(?=[th])'
+            result= re.search(expression, table_name)
+            name= str(result.group(0))
+        
+        elif re.match('.tl', table_name):
+            expression= r'\d..\d'
+            result= re.search(expression, table_name)
+            name= str(result.group(0)+"_county")
+
+
+        
 
         #read in shapefile as gdf
         gdf= gpd.read_file(file)
         
         #creating table and uploading to PostGIS
-        gdf.to_postgis(con= engine, name= table_name, if_exists= 'replace', schema= 'public')
+        gdf.to_postgis(con= engine, name= name, if_exists= 'replace', schema= 'public')
 
 
 if __name__ == "__main__":
