@@ -29,17 +29,20 @@ def init_gis():
     names= set([])
 
     for file in gis_files:
+
         #cleaning the file path strings to use as table names
         #using regex to create homogenous naming scheme
+        #removing the directory paths preceeding the file name
 
         table_name= file.split(gis_path)[1]
 
+        #separating the county and district files and filtering string to use as table names 
         if (bool(re.match('.US', table_name))):
             expression= r'.\w.\w\d(?=[th])'
             result= re.search(expression, table_name)
             name= str(result.group(0))
         
-        elif re.match('.tl', table_name):
+        elif (bool(re.match('.tl', table_name))):
             expression= r'\d..\d'
             result= re.search(expression, table_name)
             name= str(result.group(0)+"_county")
@@ -47,7 +50,7 @@ def init_gis():
 
         
 
-        #read in shapefile as gdf
+        #read in shapefile
         gdf= gpd.read_file(file)
         
         #creating table and uploading to PostGIS
