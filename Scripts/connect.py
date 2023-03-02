@@ -6,11 +6,16 @@ import geopandas as gpd
 import pandas as pd
 import csv
 
-def make_connection(query= []):
+def make_connection(query= [], gis= 0, confpath):
     conn= None
 
     try:
-        params= config()
+        if gis:
+            params= config(filename= confpath)
+        
+        else:
+            params= config()
+
 
         print('CONNECTING TO THE POSTGRESQL DATABASE...')
         conn= psycopg2.connect(**params)

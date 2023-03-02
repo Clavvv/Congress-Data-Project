@@ -9,14 +9,23 @@ def match_dates():
 
     kv= {}
 
+    def get_gis_tables():
+        make_connection()
+
+        
+
 
     def make_dates():
         end_date= date(datetime.today().year, datetime.today().month, datetime.today().day) 
-        current_date= date(2013, 1, 3)
+        current_date= date(2009, 1, 3)
 
         while current_date < end_date:
             yield current_date
             current_date+= relativedelta(years=+ 2)
+
+    
+
+
 
 
 
