@@ -15,7 +15,7 @@ def daily_update():
         insert(data)
 
         with open('log.txt', 'a') as file:
-            file.write(f'Status: 200 => {r"%Y-%m-%d"}\n')
+            file.write(f'Status: 200 => {now.strftime(r"%Y-%m-%d")}\n')
 
     else:
         with open('log.txt', 'a') as file:
