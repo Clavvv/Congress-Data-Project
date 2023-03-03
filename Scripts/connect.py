@@ -20,16 +20,16 @@ def make_connection(query, default_path= None):
 
 
 
-        print('CONNECTING TO THE POSTGRESQL DATABASE...')
+        #print('CONNECTING TO THE POSTGRESQL DATABASE...')
         conn= psycopg2.connect(**params)
 
         cursor= conn.cursor()
 
-        print('PostgreSQL database version:')
+        #print('PostgreSQL database version:')
 
         cursor.execute('SELECT version()')
         db_version= cursor.fetchone()
-        print(db_version)
+        #print(db_version)
 
 
 
