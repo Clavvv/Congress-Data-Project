@@ -1,6 +1,7 @@
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 from connect import make_connection
+import os
 
 
 def match_dates():
@@ -10,7 +11,24 @@ def match_dates():
     kv= {}
 
     def get_gis_tables():
-        make_connection()
+        config_path= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))+("\GIS_DB.ini")
+
+        metaquery= """select table_name from information_scheme.tables
+                        where table_scheme = 'public'"""
+
+
+
+        res= make_connection(query= [metaquery], gis=1, confpath= config_path)
+
+        input()
+        for each in res:
+            print(res)
+            input()
+
+
+    get_gis_tables()
+
+
 
         
 

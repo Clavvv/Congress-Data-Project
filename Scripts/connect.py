@@ -6,15 +6,11 @@ import geopandas as gpd
 import pandas as pd
 import csv
 
-def make_connection(query= [], gis= 0, confpath):
+def make_connection(query= []):
     conn= None
 
     try:
-        if gis:
-            params= config(filename= confpath)
-        
-        else:
-            params= config()
+        params= config()
 
 
         print('CONNECTING TO THE POSTGRESQL DATABASE...')

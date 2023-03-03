@@ -6,22 +6,17 @@ import geopandas as gpd
 import json
 import glob
 import re
-
+from config import config
 
 def init_gis():
 
     dir_path= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     
     #Reading and parsing json to populate db connection credentials
-    params= json.load(open(dir_path+"\GIS_DB.json"))
-    user= params['username']
-    pwd= params['password']
-    host= params['host']
-    port= params['socket']
-    database= params['database']
+    p= config(filename= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))+("\GIS_DB.ini"))
 
     #creating database connection engine
-    engine= create_engine(f'postgresql://{user}:{pwd}@{host}:{port}/{database}')
+    engine= create_engine(f'postgresql://{p["user"]}:{p["password"]}@{p["host"]}:{p["socket"]}/{p["database"]}')
 
     #getting filepaths for shapefiles
     gis_path= f"{dir_path}/GIS"
