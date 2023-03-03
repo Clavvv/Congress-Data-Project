@@ -11,6 +11,8 @@ import pandas as pd
 
 def handle_api(y= None, m= None, byMonth= False, Daily= False, *args):
 
+
+    #specifies whether api will access data for 30day/monthly increments or daily
     if byMonth:
         pyson= call_vote_by_date(y, m)
         if len(pyson) == 0:
@@ -19,6 +21,8 @@ def handle_api(y= None, m= None, byMonth= False, Daily= False, *args):
 
     elif Daily:
 
+        #this is used by the dailyupdate function to call the propublica api
+        #dtype Pyson => Dict
         pyson= daily_api()
         if len(pyson) == 0:
             return None
@@ -26,6 +30,10 @@ def handle_api(y= None, m= None, byMonth= False, Daily= False, *args):
         return pyson
 
 def monthly_schedule():
+    #creates generator for each month starting from 2014 and ending on current date
+    #to change the earliest database entries change the current date var prior to loop
+    #NOTE: changing the starting date may change the api response format and/or quality, verify with propublica docs
+    #URL= https://projects.propublica.org/api-docs/congress-api/
     end= date(datetime.today().year, datetime.today().month, 1)
     current= date(2014, 1, 1)
     end+= relativedelta(months=+1)
@@ -37,6 +45,8 @@ def monthly_schedule():
 
 def build_db():
 
+    #assembles the database by making calls to the api using the insert() function
+    #parsing from json to tabular format done with pandas
     f= "%Y-%m"
     for each in monthly_schedule():
         yr, mth= datetime.strftime(each, f).split('-')
@@ -50,6 +60,8 @@ def build_db():
 
 def init_gis():
 
+    #GIS database init
+    #takes shapefiles locally stored and uploads them to an existing PostGIS database
     dir_path= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
     gis_path= f"{dir_path}/GIS"

@@ -5,41 +5,45 @@ import os
 
 
 def match_dates():
-    #two sessions per congress, starting on jan 3 ending on jan 3 the following year
-    # eg.) 111th -> Jan 6, 2009 -> session 1 end [dec 23, 2009] -> congress end [dec 22 2010] 112 start [jan 5 2011]
+    #will create key:value pairs for each table so that I can match the corresponding county table to the congressional district tables
+    #before I perform a spatial join within POSTGIS
 
     kv= {}
 
     def get_gis_tables():
+        
+        #returns all public schema table names in the database
+
+        #specifies the config filepath for the connection function
         config_path= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))+("\GIS_DB.ini")
 
-        metaquery= """select table_name from information_scheme.tables
-                        where table_scheme = 'public'"""
+        #the query
+        metaquery= """SELECT table_schema, table_name FROM information_schema.tables
+                        where table_schema = 'public' order by table_name;"""
 
+        #query returned as list of tuples
+        res= make_connection(query= metaquery, default_path= config_path)
 
-
-        res= make_connection(query= [metaquery], gis=1, confpath= config_path)
-
-        input()
-        for each in res:
-            print(res)
-            input()
-
-
-    get_gis_tables()
-
-
-
-        
+        #slicing the query to get rid of default PostGIS geometry and spatial tables
+        return res[:-3]
 
 
     def make_dates():
+        #creates an iterator that gives the start/end date for each congress 
+        #eg. 2013-01-03 begins Congress 111 2015-01-03 begins congress 112 AND ends congress 111
         end_date= date(datetime.today().year, datetime.today().month, datetime.today().day) 
         current_date= date(2009, 1, 3)
 
         while current_date < end_date:
             yield current_date
             current_date+= relativedelta(years=+ 2)
+
+    
+    tables= get_gis_tables()
+
+    for each in make_dates():
+
+
 
     
 

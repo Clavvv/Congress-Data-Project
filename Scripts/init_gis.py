@@ -16,7 +16,7 @@ def init_gis():
     p= config(filename= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))+("\GIS_DB.ini"))
 
     #creating database connection engine
-    engine= create_engine(f'postgresql://{p["user"]}:{p["password"]}@{p["host"]}:{p["socket"]}/{p["database"]}')
+    engine= create_engine(f'postgresql://{p["user"]}:{p["password"]}@{p["host"]}:5432/{p["database"]}')
 
     #getting filepaths for shapefiles
     gis_path= f"{dir_path}/GIS"

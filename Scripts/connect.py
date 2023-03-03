@@ -6,11 +6,18 @@ import geopandas as gpd
 import pandas as pd
 import csv
 
-def make_connection(query= []):
+def make_connection(query, default_path= None):
     conn= None
+    response= None
 
     try:
-        params= config()
+        
+        if not default_path:
+            params= config(filename= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))+("\CD_Database.ini"))
+
+        else:
+           params= config(str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))+("\GIS_DB.ini"))
+
 
 
         print('CONNECTING TO THE POSTGRESQL DATABASE...')
@@ -25,8 +32,11 @@ def make_connection(query= []):
         print(db_version)
 
 
-        for item in query:
-            cursor.execute(item)
+
+        cursor.execute(query)
+        response= cursor.fetchall()
+
+
 
 
         cursor.close()
@@ -40,7 +50,7 @@ def make_connection(query= []):
             conn.close()
             print('DATABSE CONNECTION CLOSED.')
 
-    return None
+    return response
 
 
 def insert(dataframe):
