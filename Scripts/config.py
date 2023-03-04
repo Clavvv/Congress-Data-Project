@@ -1,7 +1,8 @@
 from configparser import ConfigParser
 import os
 
-
+#config parser for psycopg2 database connection.
+#reads an ini file turns it into a dictionary and returns it 
 
 def config(filename= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))+("\CD_Database.ini"), section= 'postgresql'):
 

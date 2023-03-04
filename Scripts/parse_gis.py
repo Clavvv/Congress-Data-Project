@@ -2,6 +2,7 @@ from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 from connect import make_connection
 import os
+import json
 
 
 def match_dates():
@@ -45,8 +46,13 @@ def match_dates():
         queue.pop(0)
         queue.pop(0)
 
+    with open('county-congressional-pairs.json', 'w') as file:
 
-    print(kv)
+        file.write(json.dumps(kv))
+
+        print(200)
+
+
 
 
 
