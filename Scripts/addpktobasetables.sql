@@ -7,7 +7,7 @@ BEGIN
     LEFT JOIN information_schema.table_constraints tco 
           ON tab.table_schema = tco.table_schema
           AND tab.table_name = tco.table_name 
-          AND tco.constraint_type = 'PRIMARY KEY'
+          AND tco.constraint_type = 'p_id'
     WHERE tab.table_type = 'BASE TABLE'
           AND tab.table_schema not in ('pg_catalog', 'information_schema')
           AND tco.constraint_name is null
