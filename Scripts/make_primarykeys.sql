@@ -16,4 +16,4 @@ BEGIN
         EXECUTE 'ALTER TABLE "' || row.table_schema || '"."' || row.table_name  || '" ADD COLUMN p_id SERIAL PRIMARY KEY';
     END LOOP;  
 END;
-$$;
+$$ LANGUAGE plpgsql;
