@@ -13,7 +13,7 @@ BEGIN
           AND tco.constraint_name is null
     ORDER BY table_schema, table_name 
     LOOP 
-        EXECUTE 'ALTER TABLE "' || row.table_schema || '"."' || row.table_name  || '" ADD COLUMN PRIMARY_KEY SERIAL PRIMARY KEY';
+        EXECUTE 'ALTER TABLE "' || row.table_schema || '"."' || row.table_name  || '" ADD COLUMN p_id SERIAL PRIMARY KEY';
     END LOOP;  
 END;
 $$;
