@@ -32,7 +32,28 @@ def match_dates():
         #slicing the query to get rid of default PostGIS geometry and spatial tables
         return res
 
+    def make_primarykeys(query):
 
+        #query should return a list of tables or a singular table for which a primary key needs to be added
+        #this func works by then substituting the table names in a f-string query to create an auto-incrementing serial for the primary key
+
+        tables= get_gistables()
+
+        county= tables[1][1:]
+        cd= tables[0][1:]
+
+
+        for each in county:
+            
+
+
+
+
+
+
+
+
+        return None
     #matches the correct congress to the correct county data shapefiles
     #gets all tables from GIS database
     tables= get_gis_tables()
@@ -47,10 +68,12 @@ def match_dates():
         queue.pop(0)
 
     with open('county-congressional-pairs.json', 'w') as file:
-
         file.write(json.dumps(kv))
 
-        print(200)
+    
+
+    
+
 
 
 

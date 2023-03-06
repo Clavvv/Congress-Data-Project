@@ -40,14 +40,15 @@ def init_gis():
         elif (bool(re.match('.tl', table_name))):
             expression= r'\d..\d'
             result= re.search(expression, table_name)
-            name= str(result.group(0)+"_county")
+            name= str("county"+'_'+result.group(0))
 
 
         
 
         #read in shapefile
         gdf= gpd.read_file(file)
-        
+
+
         #creating table and uploading to PostGIS
         gdf.to_postgis(con= engine, name= name, if_exists= 'replace', schema= 'public')
 
