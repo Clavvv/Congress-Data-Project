@@ -48,7 +48,6 @@ def init_gis():
         #read in shapefile
         gdf= gpd.read_file(file)
 
-
         #creating table and uploading to PostGIS
         gdf.to_postgis(con= engine, name= name, if_exists= 'replace', schema= 'public')
 
