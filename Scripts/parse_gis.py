@@ -48,6 +48,41 @@ def match_dates():
     with open('county-congressional-pairs.json', 'w') as file:
         file.write(json.dumps(kv))
 
+
+def calc_overlap():
+
+    county_table_name= None
+    congress_table_name= None
+
+    with open('county-congressional-pairs.json') as matched_pairs:
+        q= f"""
+            ALTER TABLE test_county
+	            add column IF NOT EXISTS parent_id int,
+	            add column IF NOT EXISTS overlap_pct double precision;
+	
+            UPDATE test_county county
+            set parent_id= cd.p_id, 
+	            overlap_pct = (ST_Area(ST_Transform(ST_Intersection(county.geometry, cd.geometry), 102003)) /
+                                ST_Area(ST_Transform(county.geometry, 102003))) * 100
+            FROM test_congress cd
+            WHERE ST_Intersects(ST_Transform(county.geometry, 102003), cd.geometry)
+                AND (ST_Area(ST_Transform(ST_Intersection(county.geometry, cd.geometry), 102003)) /
+                    ST_Area(ST_Transform(county.geometry, 102003))) > 0.01;
+        """
+        
+        matched_pairs= json.load(matched_pairs)
+
+        for key in matched_pairs:
+
+            for value in matched_pairs[key]:
+
+                county_table_name= value
+                congress_table_name= key
+                make_connection(query= q)
+
+
+    return None
+
     
 
     
@@ -71,4 +106,5 @@ def match_dates():
 
 
 if __name__ == '__main__':
-    match_dates()
+    #match_dates()
+    calc_overlap()
