@@ -58,29 +58,6 @@ def build_db():
     return
 
 
-def init_gis():
-
-    #GIS database init
-    #takes shapefiles locally stored and uploads them to an existing PostGIS database
-    dir_path= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-    gis_path= f"{dir_path}/GIS"
-    gis_files= glob.glob(f"{gis_path}/**/*.shp", recursive=True)
-
-    for file in gis_files:
-        #cleaning the file path strings to use as table names
-        name= file.split(gis_path)
-        table_name= name[1][1:].split('_', 1)
-        #calling database insertion function
-        gis_insert(table_name, file)
-
-    
-
-        
-        
-
-
-
 if __name__ == '__main__':
     build_db()
 
