@@ -13,7 +13,7 @@ def init_gis():
     dir_path= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     
     #Reading and parsing json to populate db connection credentials
-    p= config(filename= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))+("\GIS_DB.ini"))
+    p= config(filename= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))+("\CD_Database.ini"))
 
     #creating database connection engine
     engine= create_engine(f'postgresql://{p["user"]}:{p["password"]}@{p["host"]}:5432/{p["database"]}')
@@ -49,7 +49,7 @@ def init_gis():
         gdf= gpd.read_file(file)
 
         #creating table and uploading to PostGIS
-        gdf.to_postgis(con= engine, name= name, if_exists= 'replace', schema= 'public')
+        gdf.to_postgis(con= engine, name= name, if_exists= 'replace', schema= 'GIS')
 
 
 if __name__ == "__main__":
