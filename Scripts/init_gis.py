@@ -7,6 +7,7 @@ import json
 import glob
 import re
 from config import config
+from connect import make_connection
 
 def init_gis():
 
@@ -49,7 +50,16 @@ def init_gis():
         gdf= gpd.read_file(file)
 
         #creating table and uploading to PostGIS
-        gdf.to_postgis(con= engine, name= name, if_exists= 'replace', schema= 'GIS')
+        gdf.to_postgis(con= engine, name= name, if_exists= 'replace', schema= 'public')
+
+    with open('transform_crs.sql') as file:
+        transform= file.read()
+
+    with open('make_primarykeys.sql') as file:
+        make_primary_keys= file.read()
+
+    make_connection(query= make_primary_keys)
+    make_connection(query= transform)
 
 
 if __name__ == "__main__":

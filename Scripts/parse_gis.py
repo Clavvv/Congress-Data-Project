@@ -55,20 +55,15 @@ def calc_overlap():
     congress_table_name= None
 
     with open('county-congressional-pairs.json') as matched_pairs:
-        q= f"""
-            ALTER TABLE test_county
-	            add column IF NOT EXISTS parent_id int,
-	            add column IF NOT EXISTS overlap_pct double precision;
-	
-            UPDATE test_county county
-            set parent_id= cd.p_id, 
-	            overlap_pct = (ST_Area(ST_Transform(ST_Intersection(county.geometry, cd.geometry), 102003)) /
-                                ST_Area(ST_Transform(county.geometry, 102003))) * 100
-            FROM test_congress cd
-            WHERE ST_Intersects(ST_Transform(county.geometry, 102003), cd.geometry)
-                AND (ST_Area(ST_Transform(ST_Intersection(county.geometry, cd.geometry), 102003)) /
-                    ST_Area(ST_Transform(county.geometry, 102003))) > 0.01;
-        """
+        q= f"""create table test_output as
+	SELECT county.*, cd.p_id as parent_id,
+       	(ST_Area(ST_Intersection(county.geometry, cd.geometry)) /
+        	ST_Area(county.geometry)) * 100 as overlap_pct
+	FROM test_county county
+	INNER JOIN test_congress cd
+	ON ST_Intersects(county.geometry, cd.geometry)
+  	AND (ST_Area(ST_Intersection(county.geometry, cd.geometry))/
+       	ST_Area(county.geometry)) > 0.01;"""
         
         matched_pairs= json.load(matched_pairs)
 
