@@ -17,7 +17,7 @@ def daily_update():
     now= datetime.today()
 
     if isinstance(data, pd.DataFrame):
-        insert(data)
+        insert(data, now.strftime(r"%Y-%m-%d"))
 
         with open('log.txt', 'a') as file:
             file.write(f'Status: 200 => {now.strftime(r"%Y-%m-%d")}\n')

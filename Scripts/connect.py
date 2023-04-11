@@ -53,7 +53,7 @@ def make_connection(query, default_path= None):
     return response
 
 
-def insert(dataframe):
+def insert(dataframe, query_timestamp):
     conn= None
 
     try:
@@ -107,9 +107,14 @@ def insert(dataframe):
         conn.commit()
         cursor.close()
 
+    
+        with open('query_log.txt', 'a') as file:
+            file.write(f'Status: 200, Query Executed Successfully => {query_timestamp}\n')
+
 
     except(Exception, psycopg2.DatabaseError) as error:
-        print(error)
+        with open('query_log.txt', 'a') as file:
+            file.write(f'500 Error, Something went wrong => {query_timestamp}\n')
 
     finally:
         if conn != None:

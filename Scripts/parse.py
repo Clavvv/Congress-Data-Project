@@ -24,9 +24,11 @@ def roll_call_parse(json_arr):
     bill_data=pd.DataFrame.from_dict(bills, orient='columns')
 
     #combining the data from the inner json to the rest of the data 
-    final= pd.merge(vote_data, bill_data, left_index=True, right_index=True)
+
+    combined_data= pd.merge(vote_data, bill_data, left_index=True, right_index=True)
+
     #dropping collumns I don't care about
-    final.drop(['republican', 'independent', 'democratic', 'total', 'url', 'question_text'], axis=1, inplace=True)
+    combined_data.drop(['republican', 'independent', 'democratic', 'total', 'url', 'question_text'], axis=1, inplace=True)
 
     return final
 
