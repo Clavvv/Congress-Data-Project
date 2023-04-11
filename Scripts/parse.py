@@ -30,7 +30,13 @@ def roll_call_parse(json_arr):
     #dropping collumns I don't care about
     combined_data.drop(['republican', 'independent', 'democratic', 'total', 'url', 'question_text'], axis=1, inplace=True)
 
-    return final
+    return combined_data
+
+def misconduct_parse(dataframe):
+    df= dataframe.replace('X', 1)
+    df= df.fillna(0)
+    print(df.head(5))
+    return dataframe
 
 
 if __name__ == "__main__":

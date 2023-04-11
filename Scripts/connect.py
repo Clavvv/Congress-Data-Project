@@ -53,7 +53,7 @@ def make_connection(query, default_path= None):
     return response
 
 
-def insert(dataframe, query_timestamp):
+def insert_roll_call(dataframe, query_timestamp):
     conn= None
 
     try:
@@ -126,4 +126,4 @@ def insert(dataframe, query_timestamp):
 
 if __name__ == '__main__':
     test_df= pd.DataFrame(test_df)
-    insert(test_df)
+    insert_roll_call(test_df)

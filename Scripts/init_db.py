@@ -1,12 +1,12 @@
 import os
 import glob
-from connect import insert
+from connect import insert_roll_call
 from api import call_vote_by_date
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
 import json
 from api import daily_api
-from parse import roll_call_parse
+from parse import roll_call_parse, misconduct_parse
 import pandas as pd
 
 def handle_api(y= None, m= None, byMonth= False, Daily= False, *args):
@@ -42,6 +42,14 @@ def monthly_schedule():
         yield current
         current+= relativedelta(months=+ 1)
 
+def fetch_misconduct():
+    url= 'https://raw.githubusercontent.com/govtrack/misconduct/master/misconduct-instances.csv'
+    df= pd.read_csv(url, index_col=0)
+
+    return misconduct_parse(df)
+
+
+
 
 def build_db():
 
@@ -53,12 +61,14 @@ def build_db():
         data= roll_call_parse(handle_api(yr, mth, byMonth= True))
 
         if isinstance(data, pd.DataFrame):
-            insert(data)
+            insert_roll_call(data)
+    
+
 
     return
 
 
 if __name__ == '__main__':
-    build_db()
+    fetch_misconduct()
 
 

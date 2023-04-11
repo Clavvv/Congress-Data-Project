@@ -1,4 +1,4 @@
-from connect import insert
+from connect import insert_roll_call
 import pandas as pd
 import json
 from init_db import handle_api
@@ -17,7 +17,7 @@ def daily_update():
     now= datetime.today()
 
     if isinstance(data, pd.DataFrame):
-        insert(data, now.strftime(r"%Y-%m-%d"))
+        insert_roll_call(data, now.strftime(r"%Y-%m-%d"))
 
         with open('log.txt', 'a') as file:
             file.write(f'Status: 200 => {now.strftime(r"%Y-%m-%d")}\n')
