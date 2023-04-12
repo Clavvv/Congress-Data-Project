@@ -4,6 +4,7 @@ import json
 from init_db import handle_api
 from parse import roll_call_parse
 from datetime import datetime
+from test_suite import validate_daily_entry
 
 def daily_update():
 
@@ -19,14 +20,22 @@ def daily_update():
     if isinstance(data, pd.DataFrame):
         insert_roll_call(data, now.strftime(r"%Y-%m-%d"))
 
-        with open('log.txt', 'a') as file:
-            file.write(f'Status: 200 => {now.strftime(r"%Y-%m-%d")}\n')
+        if validate_daily_entry(): 
+
+            with open('log.txt', 'a') as file:
+                file.write(f'Status: 200 Data Retrieved and Ingested Successfully => {now.strftime(r"%Y-%m-%d")}\n')
+
+        else:
+
+            with open('log.txt', 'a') as file:
+                file.write(f'Status: 500 Data Retrieved but Not Ingested to Database => {now.strftime(r"%Y-%m-%d")}\n')
+
 
     #conditional to catch None type responses from api
     #Occurs when there are no new roll call votes for that day in congress
     else:
         with open('log.txt', 'a') as file:
-            file.write(f'Status: 204 => {now.strftime(r"%Y-%m-%d")}\n')
+            file.write(f'Status: 204 => No New Data to Process {now.strftime(r"%Y-%m-%d")}\n')
 
 if __name__ == "__main__":
     daily_update()

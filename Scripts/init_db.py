@@ -44,9 +44,12 @@ def monthly_schedule():
 
 def fetch_misconduct():
     url= 'https://raw.githubusercontent.com/govtrack/misconduct/master/misconduct-instances.csv'
-    df= pd.read_csv(url, index_col=0)
+    raw_df= pd.read_csv(url, index_col=0)
+    
 
-    return misconduct_parse(df)
+    return misconduct_parse(raw_df).to_csv('congressional_misconduct.csv')
+
+
 
 
 
@@ -69,6 +72,6 @@ def build_db():
 
 
 if __name__ == '__main__':
-    fetch_misconduct()
+    build_db()
 
 

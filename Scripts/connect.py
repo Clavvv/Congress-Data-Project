@@ -53,7 +53,8 @@ def make_connection(query, default_path= None):
     return response
 
 
-def insert_roll_call(dataframe, query_timestamp):
+def insert_roll_call(dataframe):
+    
     conn= None
 
     try:
@@ -108,13 +109,9 @@ def insert_roll_call(dataframe, query_timestamp):
         cursor.close()
 
     
-        with open('query_log.txt', 'a') as file:
-            file.write(f'Status: 200, Query Executed Successfully => {query_timestamp}\n')
-
 
     except(Exception, psycopg2.DatabaseError) as error:
-        with open('query_log.txt', 'a') as file:
-            file.write(f'500 Error, Something went wrong => {query_timestamp}\n')
+        print('ERORR')
 
     finally:
         if conn != None:
@@ -125,5 +122,4 @@ def insert_roll_call(dataframe, query_timestamp):
 
 
 if __name__ == '__main__':
-    test_df= pd.DataFrame(test_df)
-    insert_roll_call(test_df)
+    insert_roll_call(None, None)

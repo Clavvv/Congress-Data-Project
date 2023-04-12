@@ -35,8 +35,7 @@ def roll_call_parse(json_arr):
 def misconduct_parse(dataframe):
     df= dataframe.replace('X', 1)
     df= df.fillna(0)
-    print(df.head(5))
-    return dataframe
+    return df
 
 
 if __name__ == "__main__":
