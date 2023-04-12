@@ -37,7 +37,18 @@ def misconduct_parse(dataframe):
     df= df.fillna(0)
     return df
 
+def member_info_parse(raw_json):
+
+
+    i=0 
+    members_dataframe= pd.DataFrame(raw_json['results'][0]['members'])
+
+    print(members_dataframe.head(3))
+
+
+    return None
+
 
 if __name__ == "__main__":
-    roll_call_parse()
+    member_info_parse()
 

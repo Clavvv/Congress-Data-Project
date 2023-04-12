@@ -113,6 +113,18 @@ def daily_api():
 
     return parsed_json
 
+def custom_url(url):
+    assert isinstance(url, str), 'url must be a string type object'
+
+    api_key= get_api_key()
+    api_head= {'X-API-Key': api_key}
+    response= req.get(url, headers= api_head)
+    print(response)
+    input()
+    res_json= response.json()
+
+    return res_json
+
 
 if __name__ == '__main__':
     test_dates= ['2014', '02']

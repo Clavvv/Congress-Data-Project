@@ -1,33 +1,44 @@
 import os
 import glob
-from connect import insert_roll_call
-from api import call_vote_by_date
+from connect import insert_roll_call, make_connection
+from api import call_vote_by_date, daily_api, custom_url
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
 import json
-from api import daily_api
-from parse import roll_call_parse, misconduct_parse
+from parse import roll_call_parse, misconduct_parse, member_info_parse
 import pandas as pd
 
-def handle_api(y= None, m= None, byMonth= False, Daily= False, *args):
+def handle_api(url= None, byMonth= False, Daily= False, y= None, m= None, *args):
 
-
-    #specifies whether api will access data for 30day/monthly increments or daily
     if byMonth:
-        pyson= call_vote_by_date(y, m)
-        if len(pyson) == 0:
+        pyon= call_vote_by_date(y, m)
+        if len(pyon) == 0:
             return None
-        return pyson
+        return pyon
 
     elif Daily:
 
         #this is used by the dailyupdate function to call the propublica api
         #dtype Pyson => Dict
-        pyson= daily_api()
-        if len(pyson) == 0:
+        pyon= daily_api()
+        if len(pyon) == 0:
             return None
 
-        return pyson
+        return pyon
+
+    else:
+
+        pyon= custom_url(url)
+
+        if len(pyon) == 0:
+            return None
+
+        return pyon
+
+        
+
+    
+
 
 def monthly_schedule():
     #creates generator for each month starting from 2014 and ending on current date
@@ -65,13 +76,34 @@ def build_db():
 
         if isinstance(data, pd.DataFrame):
             insert_roll_call(data)
+
     
 
 
+    
     return
+
+def build_member_info():
+    curr_cong= make_connection('SELECT congress from house_roll_call order by date desc limit 1;')[0][0]
+
+
+    url= 'https://api.propublica.org/congress/v1/117/house/members.json'
+
+
+    for cong in range(113, curr_cong+1):
+        api_url= f'https://api.propublica.org/congress/v1/{cong}/house/members.json'
+
+        data= pd.DataFrame(handle_api(url= api_url)['results'][0]['members'])
+
+
+
+
+
 
 
 if __name__ == '__main__':
-    build_db()
+
+    build_member_info()
+
 
 

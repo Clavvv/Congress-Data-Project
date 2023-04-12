@@ -52,6 +52,55 @@ def make_connection(query, default_path= None):
 
     return response
 
+def insert_member_info(dataframe):
+
+    conn= None
+
+    try:
+        params= config()
+
+        print('CONNECTING TO THE POSTGRESQL DATABASE...')
+        conn= psycopg2.connect(**params)
+
+        cursor= conn.cursor()
+
+        print('PostgreSQL database version:')
+
+        cursor.execute('SELECT version()')
+        db_version= cursor.fetchone()
+        print(db_version)
+
+        cursor.execute("""CREATE TABLE IF NOT EXISTS member_info (
+                            );""")
+
+        columns= dataframe.columns
+
+        rows= dataframe.values
+
+        string_buffer= io.StringIO()
+
+        dataframe.to_csv(string_buffer, sep='\t', header=False, index=False)
+
+        string_buffer.seek(0)
+
+        data= string_buffer.getvalue()
+
+        cursor.copy_from(string_buffer, 'house_roll_call', null='')
+
+        conn.commit()
+        cursor.close()
+
+    
+
+    except(Exception, psycopg2.DatabaseError) as error:
+        print('ERORR')
+
+    finally:
+        if conn != None:
+            conn.close()
+            print('DATABSE CONNECTION CLOSED.')
+
+    return None
 
 def insert_roll_call(dataframe):
     
