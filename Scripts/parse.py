@@ -40,7 +40,6 @@ def misconduct_parse(dataframe):
 def member_info_parse(raw_json):
 
 
-    i=0 
     members_dataframe= pd.DataFrame(raw_json['results'][0]['members'])
 
     print(members_dataframe.head(3))

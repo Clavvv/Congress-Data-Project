@@ -64,21 +64,15 @@ def insert_member_info(dataframe):
         
         conn= engine.connect()
         result= conn.execute(text('select version();'))
-        print(result.fetchone())
+
+
         
-        table_name = 'member_info'
-        
-        column_types = {
-            'int64': BigInteger,
-            'float64': Float(precision=53),
-            'object': Text,
-            'bool': Boolean
-        }
-        column_definitions = {column: column_types[str(dtype)] for column, dtype in dataframe.dtypes.items()}
-        
-        dataframe.to_sql(table_name, engine, if_exists='append', index=False, dtype=column_definitions, chunksize=1000)
-        
-        print('DATA INSERTED SUCCESSFULLY INTO POSTGRESQL DATABASE')
+
+
+
+
+
+
     except Exception as error:
         print(f'ERROR: {error}')
     finally:
