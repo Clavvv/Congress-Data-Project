@@ -119,8 +119,6 @@ def custom_url(url):
     api_key= get_api_key()
     api_head= {'X-API-Key': api_key}
     response= req.get(url, headers= api_head)
-    print(response)
-    input()
     res_json= response.json()
 
     return res_json

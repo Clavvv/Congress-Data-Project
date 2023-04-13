@@ -1,6 +1,6 @@
 import os
 import glob
-from connect import insert_roll_call, make_connection
+from connect import insert_roll_call, make_connection, insert_member_info
 from api import call_vote_by_date, daily_api, custom_url
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
@@ -94,11 +94,10 @@ def build_member_info():
         api_url= f'https://api.propublica.org/congress/v1/{cong}/house/members.json'
 
         data= pd.DataFrame(handle_api(url= api_url)['results'][0]['members'])
+        bool_types= data.select_dtypes(include=['bool']).columns
+        data[bool_types]= data[bool_types].astype('boolean')
 
-
-
-
-
+        insert_member_info(data)
 
 
 if __name__ == '__main__':
