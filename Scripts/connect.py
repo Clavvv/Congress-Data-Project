@@ -6,7 +6,7 @@ import io
 import geopandas as gpd
 import pandas as pd
 import csv
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, text, URL
 from sqlalchemy.types import BigInteger, Text, Boolean, Float
 
 def make_connection(query, default_path= None):
@@ -56,86 +56,28 @@ def make_connection(query, default_path= None):
     return response
 
 def insert_member_info(dataframe):
-    engine = None
+
     try:
-        params = config()
-        print('CONNECTING TO THE POSTGRESQL DATABASE...')
-        engine = create_engine(f"postgresql://{params['user']}:{params['password']}@{params['host']}:5432/{params['database']}")
-        
-        conn= engine.connect()
-        result= conn.execute(text('select version();'))
+        params= config()
+        url_obj= URL.create(
+            "postgresql+psycopg2",
+            username= params['user'],
+            password= params['password'],
+            host= params['host'],
+            database= params['database'],
+        )
 
+        engine= create_engine(url_obj)
 
-        
+        dataframe.to_sql('member_info', engine, if_exists='append')
+        print('Success')
 
-
-
-
-
-
-    except Exception as error:
-        print(f'ERROR: {error}')
-    finally:
-        if engine is not None:
-            engine.dispose()
-            print('DATABASE CONNECTION CLOSED.')
+    except(Exception, psycopg2.DatabaseError) as error:
+        print('ERORR:', error)
 
     return None
 
 
-'''def insert_member_info(dataframe):
-
-    conn= None
-
-    try:
-        params= config()
-
-        print('CONNECTING TO THE POSTGRESQL DATABASE...')
-        conn= psycopg2.connect(**params)
-
-        cursor= conn.cursor()
-
-        print('PostgreSQL database version:')
-
-        cursor.execute('SELECT version()')
-        db_version= cursor.fetchone()
-        print(db_version)
-
-        table_name= 'member_info'
-
-        columns= list(dataframe.columns)
-        dtypes= [f"bigint" if dt == 'int64'  else
-                     'double precision' if dt == 'float64' else
-                      'text' if dt == 'object' else
-                       'boolean' if dt == 'bool' else
-                        dt for dt in dataframe.dtypes]
-
-        print(columns, ' IS THE LIST OF COLUMNS')
-        print(dtypes, ' IS THE LIST OF DATA TYPES')
-        input()
-
-        create_table_query= f'CREATE TABLE IF NOT EXISTS {table_name} ({", ".join([f"{c} {dt}" for c, dt in zip(columns, dtypes)])});'
-
-        cursor.execute(create_table_query)
-
-        vals= [tuple(x) for x in dataframe.to_records(index=False)]
-
-        execute_values(cursor, f"INSERT INTO {table_name} ({', '.join(columns)}) VALUES %s", vals)
-
-        conn.commit()
-        cursor.close()
-
-    
-
-    except(Exception, psycopg2.DatabaseError) as error:
-        print(f'ERORR: {error}')
-
-    finally:
-        if conn != None:
-            conn.close()
-            print('DATABSE CONNECTION CLOSED.')
-
-    return None'''
 
 def insert_roll_call(dataframe):
     
@@ -206,4 +148,4 @@ def insert_roll_call(dataframe):
 
 
 if __name__ == '__main__':
-    insert_roll_call(None, None)
+    insert_member_info(None)

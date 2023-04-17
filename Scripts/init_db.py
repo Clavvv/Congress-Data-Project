@@ -89,14 +89,14 @@ def build_member_info():
 
     url= 'https://api.propublica.org/congress/v1/117/house/members.json'
 
+    #// ProPublica Database is 1 year behind for member data... // 
 
-    for cong in range(113, curr_cong+1):
+
+
+    for cong in range(113, 118):
         api_url= f'https://api.propublica.org/congress/v1/{cong}/house/members.json'
 
         data= pd.DataFrame(handle_api(url= api_url)['results'][0]['members'])
-        bool_types= data.select_dtypes(include=['bool']).columns
-        data[bool_types]= data[bool_types].astype('boolean')
-
         insert_member_info(data)
 
 
