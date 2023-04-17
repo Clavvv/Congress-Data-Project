@@ -7,7 +7,7 @@ import json
 import glob
 import re
 from config import config
-from connect import make_connection
+from connect import query
 
 def init_gis():
 
@@ -58,8 +58,8 @@ def init_gis():
     with open('make_primarykeys.sql') as file:
         make_primary_keys= file.read()
 
-    make_connection(query= make_primary_keys)
-    make_connection(query= transform)
+    query(q= make_primary_keys)
+    query(q= transform)
 
 
 if __name__ == "__main__":

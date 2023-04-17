@@ -1,6 +1,6 @@
 import os
 import glob
-from connect import insert_roll_call, make_connection, export_to_database
+from connect import insert_roll_call, query, export_to_database
 from api import call_vote_by_date, daily_api, custom_url
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
@@ -84,7 +84,6 @@ def build_db():
     return
 
 def build_member_info():
-    curr_cong= make_connection('SELECT congress from house_roll_call order by date desc limit 1;')[0][0]
 
 
     url= 'https://api.propublica.org/congress/v1/117/house/members.json'
@@ -102,6 +101,14 @@ def build_member_info():
 
         data= pd.DataFrame(handle_api(url= api_url)['results'][0]['members'])
         export_to_database('member_info', data)
+
+
+    with open('merge_ideology_data.sql', 'r') as merge:
+        merge= merge.read()
+
+    query(merge)
+
+    query('select * from member_info limit 1;')
 
 
 if __name__ == '__main__':

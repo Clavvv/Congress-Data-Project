@@ -1,6 +1,6 @@
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
-from connect import make_connection
+from connect import query
 import os
 import json
 
@@ -27,7 +27,7 @@ def match_dates():
 
 
         #query returned as list of tuples
-        res= [make_connection(query= cd_query, default_path= config_path), make_connection(query= county_query, default_path= config_path)]
+        res= [query(q= cd_query, default_path= config_path), query(q= county_query, default_path= config_path)]
 
         #slicing the query to get rid of default PostGIS geometry and spatial tables
         return res
@@ -73,7 +73,7 @@ def calc_overlap():
 
                 county_table_name= value
                 congress_table_name= key
-                make_connection(query= q)
+                query(q= q)
 
 
     return None

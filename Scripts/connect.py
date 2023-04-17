@@ -33,7 +33,7 @@ def export_to_database(table_name, dataframe):
     return None
 
 
-def make_connection(query, default_path= None):
+def query(q, default_path= None):
     conn= None
     response= None
 
@@ -56,24 +56,15 @@ def make_connection(query, default_path= None):
 
         cursor.execute('SELECT version()')
         db_version= cursor.fetchone()
-        #print(db_version)
+        print(db_version)
 
 
 
-        cursor.execute(query)
-        response= cursor.fetchall()
-
-
-
-
-        cursor.close()
+        cursor.execute(q)
         conn.commit()
+        cursor.close()
+        conn.close()
 
-        if not response:
-            print('Query executed')
-        
-        else:
-            return response
 
     except(Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -83,7 +74,6 @@ def make_connection(query, default_path= None):
             conn.close()
             print('DATABSE CONNECTION CLOSED.')
 
-    return response
 
 
 def insert_roll_call(dataframe):
