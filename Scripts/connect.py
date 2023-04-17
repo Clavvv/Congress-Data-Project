@@ -9,6 +9,30 @@ import csv
 from sqlalchemy import create_engine, text, URL
 from sqlalchemy.types import BigInteger, Text, Boolean, Float
 
+
+def export_to_database(table_name, dataframe):
+
+    try:
+        params= config()
+        url_obj= URL.create(
+            "postgresql+psycopg2",
+            username= params['user'],
+            password= params['password'],
+            host= params['host'],
+            database= params['database'],
+        )
+
+        engine= create_engine(url_obj)
+
+        dataframe.to_sql(table_name, engine, if_exists='append')
+        print('Success')
+
+    except(Exception, psycopg2.DatabaseError) as error:
+        print('ERORR:', error)
+
+    return None
+
+
 def make_connection(query, default_path= None):
     conn= None
     response= None
@@ -45,6 +69,12 @@ def make_connection(query, default_path= None):
         cursor.close()
         conn.commit()
 
+        if not response:
+            print('Query executed')
+        
+        else:
+            return response
+
     except(Exception, psycopg2.DatabaseError) as error:
         print(error)
 
@@ -54,29 +84,6 @@ def make_connection(query, default_path= None):
             print('DATABSE CONNECTION CLOSED.')
 
     return response
-
-def insert_member_info(dataframe):
-
-    try:
-        params= config()
-        url_obj= URL.create(
-            "postgresql+psycopg2",
-            username= params['user'],
-            password= params['password'],
-            host= params['host'],
-            database= params['database'],
-        )
-
-        engine= create_engine(url_obj)
-
-        dataframe.to_sql('member_info', engine, if_exists='append')
-        print('Success')
-
-    except(Exception, psycopg2.DatabaseError) as error:
-        print('ERORR:', error)
-
-    return None
-
 
 
 def insert_roll_call(dataframe):

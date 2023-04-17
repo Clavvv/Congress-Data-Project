@@ -1,6 +1,6 @@
 import os
 import glob
-from connect import insert_roll_call, make_connection, insert_member_info
+from connect import insert_roll_call, make_connection, export_to_database
 from api import call_vote_by_date, daily_api, custom_url
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
@@ -90,18 +90,21 @@ def build_member_info():
     url= 'https://api.propublica.org/congress/v1/117/house/members.json'
 
     #// ProPublica Database is 1 year behind for member data... // 
+    #// More ideological data obtained from VoteView cite as necessary //
 
-
+    dir_path= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    data= pd.read_csv(dir_path+r'\Data\HSall_members.csv')
+    
+    export_to_database('member_ideology', data)
 
     for cong in range(113, 118):
         api_url= f'https://api.propublica.org/congress/v1/{cong}/house/members.json'
 
         data= pd.DataFrame(handle_api(url= api_url)['results'][0]['members'])
-        insert_member_info(data)
+        export_to_database('member_info', data)
 
 
 if __name__ == '__main__':
-
     build_member_info()
 
 
