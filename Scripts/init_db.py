@@ -99,17 +99,20 @@ def build_member_info():
     for cong in range(113, 118):
         api_url= f'https://api.propublica.org/congress/v1/{cong}/house/members.json'
 
-        data= pd.DataFrame(handle_api(url= api_url)['results'][0]['members'])
-        export_to_database('member_info', data)
+        if cong == 113:
+            curr= pd.DataFrame(handle_api(url= api_url)['results'][0]['members'])
+
+        else:
+            new= pd.DataFrame(handle_api(url= api_url)['results'][0]['members'])
+            curr= pd.concat([curr, new])
+
+    export_to_database('member_info', curr)
 
 
     with open('merge_ideology_data.sql', 'r') as merge:
         merge= merge.read()
 
     query(merge)
-
-    query('select * from member_info limit 1;')
-
 
 if __name__ == '__main__':
     build_member_info()

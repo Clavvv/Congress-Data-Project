@@ -24,7 +24,7 @@ def export_to_database(table_name, dataframe):
 
         engine= create_engine(url_obj)
 
-        dataframe.to_sql(table_name, engine, if_exists='append')
+        dataframe.to_sql(table_name, engine, if_exists='replace')
         print('Success')
 
     except(Exception, psycopg2.DatabaseError) as error:
