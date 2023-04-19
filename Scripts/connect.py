@@ -33,46 +33,39 @@ def export_to_database(table_name, dataframe):
     return None
 
 
-def query(q, default_path= None):
+def query(q, default_path=None):
     conn= None
     response= None
 
     try:
-        
         if not default_path:
-            params= config(filename= str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))+("\CD_Database.ini"))
-
+            params= config(filename=str(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + ("\CD_Database.ini"))
         else:
-           params= config(str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))+("\GIS_DB.ini"))
+            params= config(str(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + ("\GIS_DB.ini"))
 
-
-
-        #print('CONNECTING TO THE POSTGRESQL DATABASE...')
         conn= psycopg2.connect(**params)
-
         cursor= conn.cursor()
 
-        #print('PostgreSQL database version:')
+        if q.lower().startswith('SELECT'):
+            cursor.execute(q)
+            response= cursor.fetchall()
+        else:
+            cursor.execute(q)
+            conn.commit()
 
-        cursor.execute('SELECT version()')
-        db_version= cursor.fetchone()
-        print(db_version)
-
-
-
-        cursor.execute(q)
-        conn.commit()
         cursor.close()
         conn.close()
 
-
-    except(Exception, psycopg2.DatabaseError) as error:
+    except (Exception, psycopg2.DatabaseError) as error:
         print(error)
 
     finally:
-        if conn != None:
+        if conn is not None:
             conn.close()
-            print('DATABSE CONNECTION CLOSED.')
+            print('DATABASE CONNECTION CLOSED.')
+
+    return response
+
 
 
 
