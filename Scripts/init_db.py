@@ -72,7 +72,7 @@ def build_db():
     f= "%Y-%m"
     for each in monthly_schedule():
         yr, mth= datetime.strftime(each, f).split('-')
-        data= roll_call_parse(handle_api(yr, mth, byMonth= True))
+        data= roll_call_parse(handle_api(y=yr, m=mth, byMonth= True))
 
         if isinstance(data, pd.DataFrame):
             insert_roll_call(data)
@@ -109,12 +109,20 @@ def build_member_info():
     export_to_database('member_info', curr)
 
 
-    with open('merge_ideology_data.sql', 'r') as merge:
+    with open('merge_ideology_data.sql', 'r') as merge, open('member_table_perm.sql', 'r') as perms:
         merge= merge.read()
+        perms= perms.read()
+
 
     query(merge)
+    query(perms)
+
+
+
+
 
 if __name__ == '__main__':
+    build_db()
     build_member_info()
 
 

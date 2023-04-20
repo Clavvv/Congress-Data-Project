@@ -28,7 +28,11 @@ def roll_call_parse(json_arr):
     combined_data= pd.merge(vote_data, bill_data, left_index=True, right_index=True)
 
     #dropping collumns I don't care about
-    combined_data.drop(['republican', 'independent', 'democratic', 'total', 'url', 'question_text', 'amendment'], axis=1, inplace=True)
+    if 'ammendment' in combined_data.columns:
+        combined_data.drop(['republican', 'independent', 'democratic', 'total', 'url', 'question_text', 'amendment'], axis=1, inplace=True)
+
+    else:
+        combined_data.drop(['republican', 'independent', 'democratic', 'total', 'url', 'question_text'], axis=1, inplace=True)
 
     return combined_data
 
