@@ -5,6 +5,8 @@ from datetime import datetime, date
 def validate_daily_entry():
 
     today= datetime.today().date()
+
+
     try:
         if query('SELECT date from house_roll_call order by date desc limit 1;')[0][0] == today:
             return True

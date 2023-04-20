@@ -18,7 +18,8 @@ def daily_update():
     now= datetime.today()
 
     if isinstance(data, pd.DataFrame):
-        insert_roll_call(data, now.strftime(r"%Y-%m-%d"))
+
+        insert_roll_call(data)
 
         if validate_daily_entry(): 
 

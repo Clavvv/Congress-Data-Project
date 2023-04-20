@@ -46,7 +46,7 @@ def query(q, default_path=None):
         conn= psycopg2.connect(**params)
         cursor= conn.cursor()
 
-        if q.lower().startswith('SELECT'):
+        if q.upper().startswith('SELECT'):
             cursor.execute(q)
             response= cursor.fetchall()
         else:
@@ -127,7 +127,7 @@ def insert_roll_call(dataframe):
     
 
     except(Exception, psycopg2.DatabaseError) as error:
-        print('ERORR')
+        print(error)
 
     finally:
         if conn != None:
