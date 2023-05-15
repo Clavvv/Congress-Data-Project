@@ -64,4 +64,12 @@ Now, the ETL pipeline will run automatically based on your scheduled task config
 
 After every attempt at ingesting the data to Postgres, a log is written to the log.txt file. Each log includes an error code, a brief description of the error and a timestamp of when the error occurred.
 
+Here's the description of possible error codes:
+
+- **Status: 500** - Data Retrieved but Not Ingested to Database: This error indicates that the data retrieval process was successful, but there was an issue with ingesting the data into the database. It could be due to a connection problem, data formatting error, or any other issue preventing the successful ingestion of data.
+
+- **Status: 204** - No New Data to Process: This code signifies that there is no new data available to process. It means that the extraction process was successful, but there were no updates or new data to be transformed and loaded into the database.
+
+- **Status: 200** - Data Retrieved and Ingested Successfully: This status indicates that the data retrieval, transformation, and ingestion processes were successful. It means that the pipeline successfully retrieved the data from the source, transformed it as required, and loaded it into the database without any issues.
+
 
