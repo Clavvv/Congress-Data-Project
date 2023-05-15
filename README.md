@@ -38,7 +38,7 @@ user=<DATABASE_USER>
 password=<DATABASE_PASSWORD>
 ```
 
-##Automation
+## Automation
 
 The `daily_update.py` script is scheduled to run everyday after that day's session has ended via Windows Task Scheduler.
 
