@@ -19,13 +19,10 @@ This project is the backend component of a visualization web app that utilizes a
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/Clavvv/Congress-Data-Project.git```
+git clone https://github.com/Clavvv/Congress-Data-Project.git
+```
 
 ## Configuration
-
-Before running the ETL pipeline, you need to configure some settings. 
-
-### Database Configuration
 
 The database connection details are stored in a `.ini` file named `database.ini`. Follow the steps below to set up the database configuration:
 
@@ -39,3 +36,4 @@ port=<DATABASE_PORT>
 database=<DATABASE_NAME>
 user=<DATABASE_USER>
 password=<DATABASE_PASSWORD>
+```
