@@ -42,3 +42,26 @@ password=<DATABASE_PASSWORD>
 
 The `daily_update.py` script is scheduled to run everyday after that day's session has ended via Windows Task Scheduler.
 
+### Scheduling with Windows Task Scheduler
+
+Here's how to set up the Windows Task Scheduler to run the `daily_update.py` script automatically
+
+1. Open the Task Scheduler application on your Windows machine.
+2. Click on "Create Basic Task" or "Create Task" to create a new task.
+3. Specify a name and description for the task.
+4. Choose a trigger (e.g., daily, weekly) that suits your needs.
+5. Select "Start a program" as the action.
+6. Provide the path to the Python executable (`python`) as the program/script.
+7. Set the arguments to the full path of the `daily_update.py` script.
+8. Set the "Start in" field to the directory where the `daily_update.py` script is located.
+9. Review the settings and click "Finish" to create the task.
+
+Now, the ETL pipeline will run automatically based on your scheduled task configuration.
+
+
+
+## Error Handling
+
+After every attempt at ingesting the data to Postgres, a log is written to the log.txt file. Each log includes an error code, a brief description of the error and a timestamp of when the error occurred.
+
+
