@@ -114,6 +114,7 @@ def daily_api():
     return parsed_json
 
 def custom_url(url):
+
     assert isinstance(url, str), 'url must be a string type object'
 
     api_key= get_api_key()

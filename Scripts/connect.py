@@ -101,7 +101,6 @@ def insert_roll_call(dataframe):
                             time time,
                             result text,
                             bill_id text,
-                            number text,
                             sponsor_id text,
                             api_url text,
                             title text,

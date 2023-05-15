@@ -36,6 +36,44 @@ def roll_call_parse(json_arr):
 
     return combined_data
 
+
+def vote_parse(json_arr):
+
+    #       Bill will show up as empty {} if there is nothing being voted on --> January 6th confirmation of the speaker
+
+
+
+
+
+    if json_arr == None:
+        return None
+
+    nan= np.nan
+
+    whitelist= ['congress', 'chamber', 'session', 'roll_call', 'source', 'vote_uri', 'question', 
+                'description', 'vote_type', 'date', 'time', 'result', 'bill', 'sponsor_id',
+                'api_url', 'title', 'latest_action']
+
+
+    #   x= {k:v for key, value in zip(arr1, arr2}
+
+
+    for json in json_arr:
+        formattedJson= {key: json[key] for key in whitelist}
+
+        print(formattedJson)
+
+
+
+
+
+
+
+
+
+
+    return formattedData
+
 def misconduct_parse(dataframe):
     df= dataframe.replace('X', 1)
     df= df.fillna(0)
