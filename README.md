@@ -5,8 +5,8 @@ This project is the backend component of a visualization web app that utilizes a
 ## Features
 
 - Extracts congressional member information and voting data from a public API.
-- Transforms and cleans the data to ensure consistency and accuracy.
-- Loads the processed data into a Postgres database for easy querying and analysis.
+- Transforms and cleans the data to ensure consistency and accuracy. Transformations utilize a mixture of Python and SQL.
+- Loads the processed data into a Postgres database for easy querying and analysis. Inserts and table creation scripts handled with a mixture of Python's SQLAlchemy and Psycopg2 modules and SQL scripts.
 
 ## Requirements
 
@@ -37,3 +37,8 @@ database=<DATABASE_NAME>
 user=<DATABASE_USER>
 password=<DATABASE_PASSWORD>
 ```
+
+##Automation
+
+The `daily_update.py` script is scheduled to run everyday after that day's session has ended via Windows Task Scheduler.
+
