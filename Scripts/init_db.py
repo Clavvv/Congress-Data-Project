@@ -1,6 +1,6 @@
 import os
 import glob
-from connect import insert_roll_call, query, export_to_database
+from connect import query, export_to_database
 from api import call_vote_by_date, daily_api, custom_url
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
@@ -75,7 +75,7 @@ def build_db():
         data= roll_call_parse(handle_api(y=yr, m=mth, byMonth= True))
 
         if isinstance(data, pd.DataFrame):
-            insert_roll_call(data)
+            export_to_database('house_roll_call', data)
 
     
 
@@ -123,7 +123,3 @@ def build_member_info():
 
 if __name__ == '__main__':
     build_db()
-    build_member_info()
-
-
-

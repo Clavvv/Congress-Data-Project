@@ -1,6 +1,7 @@
-from connect import query
+from connect import query, export_to_database
 from datetime import datetime, date
 from api import custom_url
+from parse import roll_call_parse
 
 
 def validate_daily_entry():
@@ -19,47 +20,21 @@ def validate_daily_entry():
 
         return False
 
-def testApiResponse():
 
+def repair_database():
 
-    edge1= '2023-01-06'
+    today= datetime.today().date()
+    strf_today= today.strftime("%Y-%m-%d")
+    last_successful_ingestion= query('SELECT date from house_roll_call order by date desc limit 1;')[0][0].strftime("%Y-%m-%d")
 
-    date= '2023-05-10'
-    testing_url= f'https://api.propublica.org/congress/v1/house/votes/{date}/{date}.json'
-    
-    res= custom_url(testing_url)
+    url= f"https://api.propublica.org/congress/v1/house/votes/{last_successful_ingestion}/{strf_today}.json"
 
-    whitelist= ['congress', 'chamber', 'session', 'roll_call', 'source', 'vote_uri', 'question', 
-                'description', 'vote_type', 'date', 'time', 'result', 'bill', 'sponsor_id',
-                'api_url', 'title', 'latest_action']
+    missing_data_json_array= custom_url(url)['results']['votes']
 
-
-    #   x= {k:v for key, value in zip(arr1, arr2}
-
-    json_arr= res['results']['votes']
-
-    formattedJson= {}
-
-
-    for json in json_arr:
-
-        for key in whitelist:
-
-            if key == 'bill':
-
-                formattedJson[key]= json['bill'][key]
-
-            else:
-                formattedJson[key]= json[key]
-
-
-
-        print(formattedJson)
-
-        input()
+    export_to_database('house_roll_call', roll_call_parse(missing_data_json_array))
 
 
 
 
 if __name__ == '__main__':
-    testApiResponse()
+    repair_database()

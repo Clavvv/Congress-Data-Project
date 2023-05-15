@@ -1,4 +1,4 @@
-# Congressional Member ETL Backend
+# Congressional Member ETL
 
 This project is the backend component of a visualization web app that utilizes an ETL (Extract, Transform, Load) pipeline to gather congressional member information and voting data. The backend is implemented using Python, Postgres, and an existing public API.
 

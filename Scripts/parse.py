@@ -26,53 +26,16 @@ def roll_call_parse(json_arr):
     #combining the data from the inner json to the rest of the data 
 
     combined_data= pd.merge(vote_data, bill_data, left_index=True, right_index=True)
-
-    #dropping collumns I don't care about
-    if 'ammendment' in combined_data.columns:
-        combined_data.drop(['republican', 'independent', 'democratic', 'total', 'url', 'question_text', 'amendment'], axis=1, inplace=True)
-
-    else:
-        combined_data.drop(['republican', 'independent', 'democratic', 'total', 'url', 'question_text'], axis=1, inplace=True)
-
-    return combined_data
-
-
-def vote_parse(json_arr):
-
-    #       Bill will show up as empty {} if there is nothing being voted on --> January 6th confirmation of the speaker
-
-
-
-
-
-    if json_arr == None:
-        return None
-
-    nan= np.nan
-
     whitelist= ['congress', 'chamber', 'session', 'roll_call', 'source', 'vote_uri', 'question', 
                 'description', 'vote_type', 'date', 'time', 'result', 'bill', 'sponsor_id',
-                'api_url', 'title', 'latest_action']
+                'api_url', 'title']
 
+    #ensuring unwanted columns do not exist in the Dataframe before returning results
 
-    #   x= {k:v for key, value in zip(arr1, arr2}
+    DatabaseFormatted= combined_data.filter(whitelist, axis=1)
 
+    return DatabaseFormatted
 
-    for json in json_arr:
-        formattedJson= {key: json[key] for key in whitelist}
-
-        print(formattedJson)
-
-
-
-
-
-
-
-
-
-
-    return formattedData
 
 def misconduct_parse(dataframe):
     df= dataframe.replace('X', 1)

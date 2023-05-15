@@ -1,4 +1,4 @@
-from connect import insert_roll_call
+from connect import export_to_database
 import pandas as pd
 import json
 from init_db import handle_api
@@ -19,7 +19,7 @@ def daily_update():
 
     if isinstance(data, pd.DataFrame):
 
-        insert_roll_call(data)
+        export_to_database('house_roll_call' , data)
 
         if validate_daily_entry(): 
 
