@@ -56,8 +56,6 @@ Here's how to set up the Windows Task Scheduler to run the `daily_update.py` scr
 8. Set the "Start in" field to the directory where the `daily_update.py` script is located.
 9. Review the settings and click "Finish" to create the task.
 
-Now, the ETL pipeline will run automatically based on your scheduled task configuration.
-
 
 
 ## Error Handling
